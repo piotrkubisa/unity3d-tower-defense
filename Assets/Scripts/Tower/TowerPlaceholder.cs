@@ -4,6 +4,8 @@ using System.Collections;
 public class TowerPlaceholder : MonoBehaviour {
 	
 
+
+
 	// Use this for initialization
 	void Start () {
 	
