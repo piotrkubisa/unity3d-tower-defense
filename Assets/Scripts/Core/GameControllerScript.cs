@@ -7,26 +7,26 @@ public class GameControllerScript : MonoBehaviour {
 	public StatsScript stats;
 	public Text coinsText;
 
+    private Tower activeTower;
+
+    public WaveController waveController;
+    public Text currentWaveText;
+
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		stats = new StatsScript();
-		InvokeRepeating("LogMoney", 0, 5);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+        coinsText.text = stats.coins.ToString();
+        currentWaveText.text = waveController.currentWave.ToString();
 	}
 
-	void LateUpdate() {
-
-	}
-
-	public void LogMoney() {
-//		Debug.Log("Coins: " + stats.coins);
-		if (coinsText != null) {
-			coinsText.text = "$" + stats.coins;
-		}
-	}
+    public void OnClickNextWave()
+    {
+        waveController.SkipWaveCooldown();
+    }
+    public void OnClickUpgradeTower() { }
+    public void OnClickConstructTower() { }
+    public void OnClickConstructTrap() { }
+    public void OnClickUpgradeCancel() { }
+    public void OnClickDestroyTower() { }
 
 }

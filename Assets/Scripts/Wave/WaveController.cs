@@ -10,7 +10,8 @@ public class WaveController : MonoBehaviour {
     public float waveCooldownTime = 10f;
     private float waveEndedTime;
 	
-	private int currentWave = 0;
+    [HideInInspector]
+	public int currentWave = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -55,6 +56,12 @@ public class WaveController : MonoBehaviour {
             currentWave++;
             waveEndedTime = 0;
         }        
+    }
+
+    public void SkipWaveCooldown()
+    {
+        // @todo: untoggle in Wave
+        waveCooldownTime = 0;
     }
 
 

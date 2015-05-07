@@ -19,11 +19,13 @@ public class DartTrap : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
+        transform.position = new Vector3(transform.position.x, -0.40f, transform.position.z);
         darts.Play();
     }
 
     void OnTriggerExit(Collider col)
     {
+        transform.position = new Vector3(transform.position.x, -0.25f, transform.position.z);
         darts.Stop();
     }
 
