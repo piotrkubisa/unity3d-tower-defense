@@ -7,6 +7,8 @@ public class WaveController : MonoBehaviour {
 	public GameObject[] spawnPoints;
 
 	public GameObject enemyPrefab;
+    public float waveCooldownTime = 10f;
+    private float waveEndedTime;
 	
 	private int currentWave = 0;
 
@@ -24,23 +26,36 @@ public class WaveController : MonoBehaviour {
 	void SpawnEnemies()
 	{
 		// switch to next / may I spawn next error
-		int r = Random.Range (0, this.spawnPoints.Length -1);
+		int r = Random.Range (0, this.spawnPoints.Length);
 		GameObject spawnPoint = spawnPoints [r];
 
 		bool ret = waves[currentWave].Spawn(spawnPoint.transform, enemyPrefab);
-		if (false) {
+		if (!ret) {
 			NextWave();
 		}
 	}
 
 	void NextWave()
 	{
-		if (currentWave == waves.Length) {
+		if (currentWave >= waves.Length -1) {
 			// Fin
 		} else {
-			currentWave++;
+            if (waveEndedTime == 0)
+            {
+                waveEndedTime = Time.time;    
+            }            
+            Cooldown();
 		}
 	}
+
+    void Cooldown()
+    {
+        if (Time.time > waveEndedTime + waveCooldownTime)
+        {
+            currentWave++;
+            waveEndedTime = 0;
+        }        
+    }
 
 
 	

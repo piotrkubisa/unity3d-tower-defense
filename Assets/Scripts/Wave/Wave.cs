@@ -4,13 +4,15 @@ using System.Collections;
 public class Wave : MonoBehaviour {
 
 	public float waveSpeed = 1f;
+    public float spawnDuration = 2f;
 	public int enemiesToSpawn = 1;
 
 	private int enemiesSpawned = 0;
+    private float lastSpawnTime;
 
 	// Use this for initialization
 	void Start () {
-	
+        lastSpawnTime = Time.time;
 	}
 
 	// Update is called once per frame
@@ -21,22 +23,29 @@ public class Wave : MonoBehaviour {
 	// Can I spawn next enemy?
 	bool checkWaveVolume()
 	{
-		if (enemiesSpawned >= enemiesToSpawn) {
-			return false;
-		}
+        if (enemiesSpawned >= enemiesToSpawn)
+        {
+            return false;
+        }
+
 		return true;
 	}
 
 	public bool Spawn(Transform spawnPoint, GameObject prefab)
 	{
-		bool isSpawned = false;
+		bool canSpawn = checkWaveVolume();
 
-		if (checkWaveVolume()) {
-			GameObject go = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation) as GameObject;
-			enemiesSpawned++;
-
+        if (canSpawn)
+        {
+            if (Time.time > lastSpawnTime + spawnDuration)
+            {
+                // just spawn it!
+                GameObject go = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation) as GameObject;
+                lastSpawnTime = Time.time;
+                enemiesSpawned++;
+            }
 		}
 
-		return isSpawned;
+		return canSpawn;
 	}
 }
