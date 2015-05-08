@@ -13,6 +13,8 @@ public class ConstructController : MonoBehaviour {
     private GameObject currentTrap;
 
     public GameObject trapModifyModal;
+    public Text trapModifyError;
+    public float dartTrapDpsUpgrade = 0.125f;
 
 	// Use this for initialization
 	void Start () {
@@ -122,6 +124,7 @@ public class ConstructController : MonoBehaviour {
     {
         SlowmotionOn();
         trapModifyModal.SetActive(true);
+        trapConstructError.text = "";
     }
 
     public void OnDartTrapModifyClose() {
@@ -130,11 +133,26 @@ public class ConstructController : MonoBehaviour {
         currentTrap = null;
     }
 
-    public void OnDartTrapModifyUpgrade() { }
+    public void OnDartTrapModifyUpgrade()
+    {
+        bool hasMonies = false;
+        if (hasMonies)
+        {
+            // @todo: remove coins
+            Debug.Log("some coins removed");
+            DartTrap dt = currentTrap.GetComponent<DartTrap>();
+            dt.dps += dartTrapDpsUpgrade;
+            OnDartTrapModifyClose();
+        }
+        else
+        {
+            trapModifyError.text = "Not enough credits to upgrade attack of this trap.";
+        }        
+    }
 
     public void OnDartTrapModifySell()
     { 
-        // addCredits to Base stats
+        // @todo: addCredits to Base stats
         Debug.Log("some coins added");
 
         DartTrap dt = currentTrap.GetComponent<DartTrap>();
