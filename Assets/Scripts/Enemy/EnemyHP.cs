@@ -18,8 +18,12 @@ public class EnemyHP : MonoBehaviour {
 	public void OnDamage(float attackDmg) {
 		this.hp -= attackDmg;
 		if (this.hp < 0) {
-			Destroy(this.gameObject);
-			// DieEvent
+            DieEvent();
 		}
 	}
+
+    void DieEvent()
+    {
+        Destroy(this.gameObject);
+    }
 }

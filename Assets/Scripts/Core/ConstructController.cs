@@ -22,11 +22,16 @@ public class ConstructController : MonoBehaviour {
 		// TowerPrefab Menu
 
 		Renderer rend = placeholder.GetComponent<Renderer> ();
-		Vector3 pos = new Vector3 (placeholder.transform.position.x, placeholder.transform.position.y + rend.bounds.size.y, placeholder.transform.position.z);
+		Vector3 pos = new Vector3 (placeholder.transform.position.x, placeholder.transform.position.y / 2, placeholder.transform.position.z);
 		rend.enabled = false; // should go to TowerPlaceholder
 
 		Instantiate(towerPrefab, pos, Quaternion.identity);
 
 		return isSpawned;
 	}
+
+    public void ModifyTower(Tower tower)
+    {
+        // Show UI
+    }
 }

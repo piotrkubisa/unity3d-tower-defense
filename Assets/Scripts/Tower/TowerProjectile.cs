@@ -25,9 +25,10 @@ public class TowerProjectile : MonoBehaviour {
 		transform.position += transform.forward * travelSpeed * Time.deltaTime;		
 	}
 
-	void Attack() {
-		if (tower != null) {
-			EnemyHP hp = target.GetComponent<EnemyHP>();
+	void Attack(GameObject victim) {
+        if (victim != null)
+        {
+            EnemyHP hp = victim.GetComponent<EnemyHP>();
 			if(hp != null) {
 				hp.OnDamage(tower.dps);
 			}
@@ -36,8 +37,8 @@ public class TowerProjectile : MonoBehaviour {
 
 	void OnTriggerEnter(Collider col) {
 		if (col.gameObject.tag == Tag.Enemy) {
-			Attack();
+			Attack(col.gameObject);
 		}
-
+        Destroy(this.gameObject);
 	}
 }

@@ -8,18 +8,22 @@ public class TowerEvents : MonoBehaviour {
 	public Material materialHover;
 	public Material materialStandart;
 
+    private ConstructController cc;
+    private Tower tower;
+
 
 	// Use this for initialization
 	void Awake () {
 		rend = GetComponent<MeshRenderer>();
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+        cc = Camera.main.GetComponent<ConstructController>();
+        tower = GetComponentInChildren<Tower>();
 	}
 
+    void OnMouseDown()
+    {
+        cc.ModifyTower(tower);
+    }
+	
 	void OnMouseEnter() {
 		rend.material = materialHover;
 	}
