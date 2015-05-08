@@ -10,7 +10,6 @@ public class TrapPlaceholder : Placeholder {
 
     protected override void OnClick()
     {
-        bool hasBeenSpawned = constructController.SpawnTrap(this.gameObject);
-        this.disabled = hasBeenSpawned;
+        constructController.SpawnTrap(this.gameObject);
     }
 }

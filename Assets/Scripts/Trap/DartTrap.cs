@@ -17,6 +17,11 @@ public class DartTrap : Trap {
 	
 	}
 
+    void OnMouseDown()
+    {
+
+    }
+
     void OnTriggerEnter(Collider col)
     {
         transform.position = new Vector3(transform.position.x, -0.40f, transform.position.z);

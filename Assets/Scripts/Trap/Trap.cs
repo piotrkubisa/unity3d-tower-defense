@@ -6,8 +6,9 @@ public class Trap : MonoBehaviour {
     private MeshRenderer rend;
     private Material materialStandart;
     public Material materialHover;
+    public ConstructController cc;
+    public TrapPlaceholder trapPlaceholder;
 
-	// Use this for initialization
 	void Start () {
         rend = GetComponent<MeshRenderer>();
         materialStandart = rend.material;

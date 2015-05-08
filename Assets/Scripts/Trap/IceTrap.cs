@@ -3,16 +3,6 @@ using System.Collections;
 
 public class IceTrap : Trap {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     void OnTriggerStay(Collider col)
     {
         // col.gameObject

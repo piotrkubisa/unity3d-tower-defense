@@ -40,7 +40,7 @@ public class Wave : MonoBehaviour {
             if (Time.time > lastSpawnTime + spawnDuration)
             {
                 // just spawn it!
-                GameObject go = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation) as GameObject;
+                Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
                 lastSpawnTime = Time.time;
                 enemiesSpawned++;
             }
