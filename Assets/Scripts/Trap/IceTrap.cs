@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class IceTrap : MonoBehaviour {
+public class IceTrap : Trap {
 
 	// Use this for initialization
 	void Start () {

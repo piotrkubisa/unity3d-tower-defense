@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DartTrap : MonoBehaviour {
+public class DartTrap : Trap {
 
     public float dps = 0.25f;
 
@@ -10,7 +10,7 @@ public class DartTrap : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
         darts = GetComponentInChildren<ParticleSystem>();
-	}
+    } 
 	
 	// Update is called once per frame
 	void Update () {
