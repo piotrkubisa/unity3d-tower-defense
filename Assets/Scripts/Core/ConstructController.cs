@@ -6,6 +6,7 @@ public class ConstructController : MonoBehaviour {
 
 	public GameObject towerPrefab;
     public GameObject dartTrapPrefab;
+    public GameObject iceTrapPrefab;
 
     public GameObject trapConstructModal;
     public Text trapConstructError;
@@ -67,9 +68,12 @@ public class ConstructController : MonoBehaviour {
 
     public void OnTrapConstructOpen()
     {
-        SlowmotionOn();
-        trapConstructError.text = "";
-        trapConstructModal.SetActive(true);
+        if (!trapModifyModal.activeSelf)
+        {
+            SlowmotionOn();
+            trapConstructError.text = "";
+            trapConstructModal.SetActive(true);
+        }
     }
 
     public void OnTrapConstructClose()
@@ -110,6 +114,23 @@ public class ConstructController : MonoBehaviour {
         bool hasMonies = true;
         if (hasMonies)
         {
+            // Prepare
+            Renderer rend = currentTrap.GetComponent<Renderer>();
+            Vector3 pos = new Vector3(currentTrap.transform.position.x, currentTrap.transform.position.y / 2, currentTrap.transform.position.z);
+
+            // Instantiate
+            GameObject go = Instantiate(iceTrapPrefab, pos, currentTrap.transform.rotation) as GameObject;
+            IceTrap it = go.GetComponent<IceTrap>();
+            it.trapPlaceholder = currentTrap;
+            it.cc = this;
+
+            // Hide Placeholder
+            //rend.enabled = false;
+            currentTrap.SetActive(false);
+            OnTrapConstructClose();
+        }
+        else
+        {
             trapConstructError.text = "Not enough credits to construct ice trap.";
         }
     }
@@ -122,9 +143,12 @@ public class ConstructController : MonoBehaviour {
 
     public void OnDartTrapModifyOpen()
     {
-        SlowmotionOn();
-        trapModifyModal.SetActive(true);
-        trapConstructError.text = "";
+        if (!trapConstructModal.activeSelf)
+        {
+            SlowmotionOn();
+            trapModifyModal.SetActive(true);
+            trapConstructError.text = "";
+        }
     }
 
     public void OnDartTrapModifyClose() {
