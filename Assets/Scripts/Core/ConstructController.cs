@@ -4,6 +4,7 @@ using System.Collections;
 public class ConstructController : MonoBehaviour {
 
 	public GameObject towerPrefab;
+    public GameObject trapPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +30,19 @@ public class ConstructController : MonoBehaviour {
 
 		return isSpawned;
 	}
+
+    public bool SpawnTrap(GameObject placeholder)
+    {
+        bool isSpawned = true;
+
+        Renderer rend = placeholder.GetComponent<Renderer>();
+        Vector3 pos = new Vector3(placeholder.transform.position.x, placeholder.transform.position.y / 2, placeholder.transform.position.z);
+        rend.enabled = false; // should go to TrapPlaceholder
+
+        Instantiate(trapPrefab, pos, Quaternion.identity);
+
+        return isSpawned;
+    }
 
     public void ModifyTower(Tower tower)
     {

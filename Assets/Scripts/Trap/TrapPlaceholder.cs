@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TrapPlaceholder : MonoBehaviour {
+public class TrapPlaceholder : Placeholder {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
 	// Update is called once per frame
 	void Update () {
 	
 	}
+
+    protected override void OnClick()
+    {
+        bool hasBeenSpawned = constructController.SpawnTrap(this.gameObject);
+        this.disabled = hasBeenSpawned;
+    }
 }

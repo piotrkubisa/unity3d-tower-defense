@@ -12,4 +12,14 @@ public class IceTrap : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    void OnTriggerStay(Collider col)
+    {
+        // col.gameObject
+        NavMeshAgent nav = col.gameObject.GetComponent<NavMeshAgent>();
+        if (nav)
+        {
+            nav.speed = 0.2f;
+        }
+    }
 }
