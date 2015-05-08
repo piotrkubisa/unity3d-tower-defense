@@ -12,6 +12,8 @@ public class ConstructController : MonoBehaviour {
 
     private GameObject currentTrap;
 
+    public GameObject trapModifyModal;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -37,6 +39,16 @@ public class ConstructController : MonoBehaviour {
 		return isSpawned;
 	}
 
+    protected void SlowmotionOn()
+    {
+        Time.timeScale = 0.1f;
+    }
+
+    protected void SlowmotionOff()
+    {
+        Time.timeScale = 1f;
+    }
+
     public void SpawnTrap(GameObject placeholder)
     {
         currentTrap = placeholder;
@@ -53,7 +65,7 @@ public class ConstructController : MonoBehaviour {
 
     public void OnTrapConstructOpen()
     {
-        Time.timeScale = 0.1f;
+        SlowmotionOn();
         trapConstructError.text = "";
         trapConstructModal.SetActive(true);
     }
@@ -61,19 +73,27 @@ public class ConstructController : MonoBehaviour {
     public void OnTrapConstructClose()
     {
         currentTrap = null;
-        Time.timeScale = 1f;
+        SlowmotionOff();
         trapConstructModal.SetActive(false);
     }
 
     public void OnDartTrapConstruct()
     {
-        bool hasMonies = false;
+        bool hasMonies = true;
         if (hasMonies)
         {
+            // Prepare
             Renderer rend = currentTrap.GetComponent<Renderer>();
-            Vector3 pos = new Vector3(currentTrap.transform.position.x, currentTrap.transform.position.y / 2, currentTrap.transform.position.z);
-            rend.enabled = false;
-            Instantiate(dartTrapPrefab, pos, currentTrap.transform.rotation);
+            Vector3 pos = new Vector3(currentTrap.transform.position.x, currentTrap.transform.position.y / 2, currentTrap.transform.position.z);            
+            
+            // Instantiate
+            GameObject go = Instantiate(dartTrapPrefab, pos, currentTrap.transform.rotation) as GameObject;
+            DartTrap dt = go.GetComponent<DartTrap>();
+            dt.trapPlaceholder = currentTrap;
+            dt.cc = this;
+
+            // Hide Placeholder
+            //rend.enabled = false;
             currentTrap.SetActive(false);
             OnTrapConstructClose();
         }
@@ -90,6 +110,37 @@ public class ConstructController : MonoBehaviour {
         {
             trapConstructError.text = "Not enough credits to construct ice trap.";
         }
+    }
+
+    public void ModifyDartTrap(GameObject dt)
+    {
+        currentTrap = dt;
+        OnDartTrapModifyOpen();        
+    }
+
+    public void OnDartTrapModifyOpen()
+    {
+        SlowmotionOn();
+        trapModifyModal.SetActive(true);
+    }
+
+    public void OnDartTrapModifyClose() {
+        SlowmotionOff();
+        trapModifyModal.SetActive(false);
+        currentTrap = null;
+    }
+
+    public void OnDartTrapModifyUpgrade() { }
+
+    public void OnDartTrapModifySell()
+    { 
+        // addCredits to Base stats
+        Debug.Log("some coins added");
+
+        DartTrap dt = currentTrap.GetComponent<DartTrap>();
+        dt.trapPlaceholder.SetActive(true);
+        Destroy(currentTrap);
+        OnDartTrapModifyClose();
     }
 
     public void ModifyTower(Tower tower)

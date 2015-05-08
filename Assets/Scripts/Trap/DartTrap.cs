@@ -19,7 +19,7 @@ public class DartTrap : Trap {
 
     void OnMouseDown()
     {
-
+        cc.ModifyDartTrap(this.gameObject);
     }
 
     void OnTriggerEnter(Collider col)

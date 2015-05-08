@@ -7,11 +7,20 @@ public class Trap : MonoBehaviour {
     private Material materialStandart;
     public Material materialHover;
     public ConstructController cc;
-    public TrapPlaceholder trapPlaceholder;
+    public GameObject trapPlaceholder;
 
 	void Start () {
         rend = GetComponent<MeshRenderer>();
         materialStandart = rend.material;
+        Construct();
+    }
+
+    void Construct()
+    {
+        if (cc == null)
+        {
+            cc = Camera.main.GetComponent<ConstructController>();
+        }
     }
 
     void OnMouseEnter()
