@@ -26,9 +26,9 @@ public class TowerProjectile : MonoBehaviour {
 	}
 
 	void Attack() {
-		if (tower) {
+		if (tower != null) {
 			EnemyHP hp = target.GetComponent<EnemyHP>();
-			if(hp) {
+			if(hp != null) {
 				hp.OnDamage(tower.dps);
 			}
 		}

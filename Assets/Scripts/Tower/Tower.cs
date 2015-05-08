@@ -13,7 +13,6 @@ public class Tower : MonoBehaviour {
 
 	public GameObject arrowPrefab;
 
-
 	public GameObject target;
 
 	void Start () {
@@ -42,5 +41,5 @@ public class Tower : MonoBehaviour {
 	}
 
 	public virtual void Attack() {
-	}
+	}	
 }

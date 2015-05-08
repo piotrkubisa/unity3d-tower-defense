@@ -4,8 +4,7 @@ using System.Collections;
 public class WatchTower : Tower {
 
 	// Use this for initialization
-	void Start () {
-	
+	void Awake () {
 	}
 	
 	// Update is called once per frame
@@ -22,4 +21,5 @@ public class WatchTower : Tower {
 			instance.transform.LookAt(target.transform.position);
 		}
 	}
+
 }
