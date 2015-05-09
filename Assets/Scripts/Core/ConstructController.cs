@@ -221,6 +221,26 @@ public class ConstructController : MonoBehaviour {
 
     public void OnGuardTowerConstruct()
     {
+        bool hasMonies = true;
+        if (hasMonies)
+        {
+            // Prepare
+            Vector3 pos = new Vector3(currentTower.transform.position.x, currentTower.transform.position.y / 2, currentTower.transform.position.z);
+
+            // Instantiate
+            GameObject go = Instantiate(guardTowerPrefab, pos, Quaternion.identity) as GameObject;
+            GuardTower gt = go.GetComponentInChildren<GuardTower>();
+            gt.towerPlaceholder = currentTower;
+            gt.cc = this;
+
+            // Hide Placeholder
+            currentTower.SetActive(false);
+            OnTowerConstructClose();
+        }
+        else
+        {
+            towerConstructError.text = "Not enough credits to  construct Guard Tower.";
+        }
     }
 
     public void OnTowerConstructClose()

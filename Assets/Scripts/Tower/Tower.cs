@@ -12,10 +12,17 @@ public class Tower : MonoBehaviour {
 	public float buildCooldown = 2f;
 
 	public GameObject arrowPrefab;
-	public GameObject target;
 
+    [HideInInspector]
+	public GameObject target;
+    [HideInInspector]
     public ConstructController cc;
+    [HideInInspector]
     public GameObject towerPlaceholder;
+
+    public Transform parent;
+    private float buildY = 1.25f;
+    private float buildStartY;
 
 	void Start () {
         Construct();
@@ -48,8 +55,23 @@ public class Tower : MonoBehaviour {
 		}
 	}
 
-	public virtual void Build() {
-	}
+    public void Build()
+    {
+
+        buildStartY = parent.position.y;
+        StartCoroutine(Building());
+    }
+
+    IEnumerator Building()
+    {
+        float buildStep = (1 / buildCooldown);
+        float buildTimeDuration = buildY / (buildStep / buildCooldown);
+        while (parent.position.y < buildStartY + buildY)
+        {
+            parent.position += new Vector3(0, buildStep, 0);
+            yield return new WaitForSeconds(buildCooldown / buildTimeDuration);
+        }
+    }
 
 	public virtual void Attack() {
 	}	
