@@ -3,6 +3,7 @@ using System.Collections;
 
 public class EnemyBehaviourScript : MonoBehaviour {
 
+    [HideInInspector]
 	public NavMeshAgent nav;
 	public GameObject targetCollectible;
 
