@@ -10,7 +10,6 @@ public class TowerPlaceholder : Placeholder {
 
 	protected override void OnClick()
 	{
-		bool hasBeenSpawned = constructController.SpawnTower (this.gameObject);
-		this.disabled = hasBeenSpawned;
+		constructController.SpawnTower (this.gameObject);
 	}
 }

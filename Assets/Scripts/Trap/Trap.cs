@@ -31,6 +31,5 @@ public class Trap : MonoBehaviour {
     void OnMouseExit()
     {
         rend.material = materialStandart;
-	}
-
+    }
 }

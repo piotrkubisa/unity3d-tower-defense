@@ -12,13 +12,24 @@ public class Tower : MonoBehaviour {
 	public float buildCooldown = 2f;
 
 	public GameObject arrowPrefab;
-
 	public GameObject target;
 
+    public ConstructController cc;
+    public GameObject towerPlaceholder;
+
 	void Start () {
+        Construct();
 		Build ();
-		InvokeRepeating("Attack", buildCooldown, rateOfFire);
-	}
+		InvokeRepeating("Attack", buildCooldown, rateOfFire);        
+    }
+
+    void Construct()
+    {
+        if (cc == null)
+        {
+            cc = Camera.main.GetComponent<ConstructController>();
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {

@@ -4,9 +4,12 @@ using System.Collections;
 
 public class ConstructController : MonoBehaviour {
 
-	public GameObject towerPrefab;
+	public GameObject watchTowerPrefab;
+    public GameObject guardTowerPrefab;
     public GameObject dartTrapPrefab;
     public GameObject iceTrapPrefab;
+
+    private bool modalSempahore = true;
 
     public GameObject trapConstructModal;
     public Text trapConstructError;
@@ -16,6 +19,14 @@ public class ConstructController : MonoBehaviour {
     public GameObject trapModifyModal;
     public Text trapModifyError;
     public float dartTrapDpsUpgrade = 0.125f;
+
+    private GameObject currentTower;
+    public GameObject towerConstructModal;
+    public Text towerConstructError;
+
+    public GameObject watchTowerModifyModal;
+    public Text watchTowerModifyError;
+    public float watchTowerDpsUpgrade = 5f;
 
 	// Use this for initialization
 	void Start () {
@@ -27,50 +38,33 @@ public class ConstructController : MonoBehaviour {
 	
 	}
 
-	public bool SpawnTower(GameObject placeholder)
-	{
-		bool isSpawned = true;
+    // ===========================================================
 
-		// TowerPrefab Menu
-
-		Renderer rend = placeholder.GetComponent<Renderer> ();
-		Vector3 pos = new Vector3 (placeholder.transform.position.x, placeholder.transform.position.y / 2, placeholder.transform.position.z);
-		rend.enabled = false; // should go to TowerPlaceholder
-
-		Instantiate(towerPrefab, pos, Quaternion.identity);
-
-		return isSpawned;
-	}
-
-    protected void SlowmotionOn()
+    protected void ShowModal()
     {
         Time.timeScale = 0.1f;
+        modalSempahore = false;
     }
 
-    protected void SlowmotionOff()
+    protected void HideModal()
     {
         Time.timeScale = 1f;
+        modalSempahore = true;
     }
+
+    // ============================================================
 
     public void SpawnTrap(GameObject placeholder)
     {
         currentTrap = placeholder;
         OnTrapConstructOpen();
-
-        /*
-        Renderer rend = placeholder.GetComponent<Renderer>();
-        Vector3 pos = new Vector3(placeholder.transform.position.x, placeholder.transform.position.y / 2, placeholder.transform.position.z);
-        rend.enabled = false; // should go to TrapPlaceholder
-
-        Instantiate(trapPrefab, pos, placeholder.transform.rotation);
-         */
     }
 
     public void OnTrapConstructOpen()
     {
-        if (!trapModifyModal.activeSelf)
+        if (modalSempahore)
         {
-            SlowmotionOn();
+            ShowModal();
             trapConstructError.text = "";
             trapConstructModal.SetActive(true);
         }
@@ -79,7 +73,7 @@ public class ConstructController : MonoBehaviour {
     public void OnTrapConstructClose()
     {
         currentTrap = null;
-        SlowmotionOff();
+        HideModal();
         trapConstructModal.SetActive(false);
     }
 
@@ -89,7 +83,6 @@ public class ConstructController : MonoBehaviour {
         if (hasMonies)
         {
             // Prepare
-            Renderer rend = currentTrap.GetComponent<Renderer>();
             Vector3 pos = new Vector3(currentTrap.transform.position.x, currentTrap.transform.position.y / 2, currentTrap.transform.position.z);            
             
             // Instantiate
@@ -99,7 +92,6 @@ public class ConstructController : MonoBehaviour {
             dt.cc = this;
 
             // Hide Placeholder
-            //rend.enabled = false;
             currentTrap.SetActive(false);
             OnTrapConstructClose();
         }
@@ -115,7 +107,6 @@ public class ConstructController : MonoBehaviour {
         if (hasMonies)
         {
             // Prepare
-            Renderer rend = currentTrap.GetComponent<Renderer>();
             Vector3 pos = new Vector3(currentTrap.transform.position.x, currentTrap.transform.position.y / 2, currentTrap.transform.position.z);
 
             // Instantiate
@@ -125,7 +116,6 @@ public class ConstructController : MonoBehaviour {
             it.cc = this;
 
             // Hide Placeholder
-            //rend.enabled = false;
             currentTrap.SetActive(false);
             OnTrapConstructClose();
         }
@@ -135,6 +125,8 @@ public class ConstructController : MonoBehaviour {
         }
     }
 
+    // ============================================================
+
     public void ModifyDartTrap(GameObject dt)
     {
         currentTrap = dt;
@@ -143,16 +135,16 @@ public class ConstructController : MonoBehaviour {
 
     public void OnDartTrapModifyOpen()
     {
-        if (!trapConstructModal.activeSelf)
+        if (modalSempahore)
         {
-            SlowmotionOn();
+            ShowModal();
             trapModifyModal.SetActive(true);
             trapConstructError.text = "";
         }
     }
 
     public void OnDartTrapModifyClose() {
-        SlowmotionOff();
+        HideModal();
         trapModifyModal.SetActive(false);
         currentTrap = null;
     }
@@ -185,8 +177,109 @@ public class ConstructController : MonoBehaviour {
         OnDartTrapModifyClose();
     }
 
-    public void ModifyTower(Tower tower)
+    // ============================================================
+
+    public void SpawnTower(GameObject placeholder)
     {
-        // Show UI
+        currentTower = placeholder;
+        OnTowerConstructOpen();
+    }
+
+    public void OnTowerConstructOpen()
+    {
+        if (modalSempahore)
+        {
+            ShowModal();
+            towerConstructError.text = "";
+            towerConstructModal.SetActive(true);
+        }
+    }
+
+    public void OnWatchTowerConstruct()
+    {
+        bool hasMonies = true;
+        if (hasMonies)
+        {
+            // Prepare
+            Vector3 pos = new Vector3(currentTower.transform.position.x, currentTower.transform.position.y / 2, currentTower.transform.position.z);
+
+            // Instantiate
+            GameObject go = Instantiate(watchTowerPrefab, pos, Quaternion.identity) as GameObject;
+            WatchTower wt = go.GetComponentInChildren<WatchTower>();
+            wt.towerPlaceholder = currentTower;
+            wt.cc = this;
+
+            // Hide Placeholder
+            currentTower.SetActive(false);
+            OnTowerConstructClose();
+        }
+        else
+        {
+            towerConstructError.text = "Not enough credits to  construct Watch Tower.";
+        }
+    }
+
+    public void OnGuardTowerConstruct()
+    {
+    }
+
+    public void OnTowerConstructClose()
+    {
+        HideModal();
+        currentTower = null;
+        towerConstructModal.SetActive(false);
+    }
+
+    // ============================================================
+
+    public void ModifyTower(GameObject tower)
+    {
+        currentTower = tower;
+        OnWatchTowerModifyOpen();
+    }
+
+    public void OnWatchTowerModifyOpen()
+    {
+        if (modalSempahore)
+        {
+            ShowModal();
+            watchTowerModifyError.text = "";
+            watchTowerModifyModal.SetActive(true);
+        }
+    }
+
+    public void OnWatchTowerModifySell()
+    {
+        // @todo: addCredits to Base stats
+        Debug.Log("some coins added");
+
+        WatchTower wt = currentTower.GetComponent<WatchTower>();
+        wt.towerPlaceholder.SetActive(true);
+        Destroy(currentTower.GetComponentInParent<TowerEvents>().gameObject);
+        OnWatchTowerModifyClose();
+    }
+
+    public void OnWatchTowerModifyUpgrade()
+    {
+        bool hasMonies = false;
+        if (hasMonies)
+        {
+            // @todo: remove coins
+            Debug.Log("some coins removed");
+            WatchTower wt = currentTower.GetComponent<WatchTower>();
+            wt.dps += watchTowerDpsUpgrade;
+            OnWatchTowerModifyClose();
+        }
+        else
+        {
+            watchTowerModifyError.text = "Not enough credits to upgrade attack of this Watch Tower.";
+        }
+    }
+
+    public void OnWatchTowerModifyClose() 
+    {
+        HideModal();
+        currentTower = null;
+        watchTowerModifyModal.SetActive(false);
     }
 }

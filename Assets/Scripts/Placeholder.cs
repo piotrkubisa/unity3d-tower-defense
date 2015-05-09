@@ -6,14 +6,33 @@ public class Placeholder : MonoBehaviour {
 	public bool disabled = false;
     public ConstructController constructController;
 
+    private MeshRenderer rend;
+    public Material materialHover;
+    private Material materialStandart;
+
     // Use this for initialization
     void Start()
     {
-        Construct();        
+        Construct();
+    }
+
+    void OnMouseEnter()
+    {
+        if (materialHover)
+        {
+            rend.material = materialHover;    
+        }
+    }
+
+    void OnMouseExit()
+    {
+        rend.material = materialStandart;
     }
 
     protected void Construct()
     {
+        rend = GetComponent<MeshRenderer>();
+        materialStandart = rend.material;
         if (constructController == null)
         {
             constructController = Camera.main.GetComponent<ConstructController>();
