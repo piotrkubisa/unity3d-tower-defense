@@ -12,6 +12,8 @@ public class GameControllerScript : MonoBehaviour {
     public WaveController waveController;
     public Text currentWaveText;
 
+    public GameObject menu;
+
 	// Use this for initialization
 	void Awake () {
 		stats = new StatsScript();
@@ -23,10 +25,22 @@ public class GameControllerScript : MonoBehaviour {
     {
         waveController.SkipWaveCooldown();
     }
-    public void OnClickUpgradeTower() { }
-    public void OnClickConstructTower() { }
-    public void OnClickConstructTrap() { }
-    public void OnClickUpgradeCancel() { }
-    public void OnClickDestroyTower() { }
+
+    public void OnShowMenu()
+    {
+        menu.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void OnCloseMenu()
+    {
+        menu.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 
 }
