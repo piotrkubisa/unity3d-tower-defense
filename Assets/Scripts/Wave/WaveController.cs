@@ -39,7 +39,7 @@ public class WaveController : MonoBehaviour {
 	void NextWave()
 	{        
 		if (currentWave >= waves.Length -1) {
-			// Fin
+            Fin();
 		} else {
             if (waveEndedTime == 0)
             {
@@ -53,7 +53,7 @@ public class WaveController : MonoBehaviour {
     {
         if (Time.time > waveEndedTime + waveCooldownTime)
         {
-            currentWave++;
+            OnWaveChange();            
             waveEndedTime = 0;
         }        
     }
@@ -62,5 +62,16 @@ public class WaveController : MonoBehaviour {
     {
         // @todo: untoggle in Wave
         waveCooldownTime = 0;
-    }	
+    }
+
+    void Fin()
+    {
+        Debug.Log("It was last round");
+    }
+
+    void OnWaveChange()
+    {
+        currentWave++;
+        Debug.Log("Wave " + currentWave + " has started");
+    }
 }
