@@ -60,7 +60,8 @@ public class EnemyBehaviourScript : MonoBehaviour {
 
 	private void runaway() {
 		nav.speed = runawaySpeed;
-		nav.Stop();
+		nav.Stop(); // dont stop
+        
 	}
 
     private void findClosestCollectible() {

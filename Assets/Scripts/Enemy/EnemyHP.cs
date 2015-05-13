@@ -4,10 +4,12 @@ using System.Collections;
 public class EnemyHP : MonoBehaviour {
 
 	public float hp = 100f;
+    [HideInInspector]
+    public float startHpVal;
 
 	// Use this for initialization
 	void Start () {
-	
+        startHpVal = hp;
 	}
 	
 	// Update is called once per frame
@@ -17,12 +19,12 @@ public class EnemyHP : MonoBehaviour {
 
 	public void OnDamage(float attackDmg) {
 		this.hp -= attackDmg;
-		if (this.hp < 0) {
-            DieEvent();
+		if (this.hp <= 0) {
+            OnDie();
 		}
 	}
 
-    void DieEvent()
+    void OnDie()
     {
         Destroy(this.gameObject);
     }

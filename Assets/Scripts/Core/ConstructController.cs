@@ -9,8 +9,6 @@ public class ConstructController : MonoBehaviour {
     public GameObject dartTrapPrefab;
     public GameObject iceTrapPrefab;
 
-    private bool modalSempahore = true;
-
     public GameObject trapConstructModal;
     public Text trapConstructError;
 
@@ -28,9 +26,11 @@ public class ConstructController : MonoBehaviour {
     public Text watchTowerModifyError;
     public float watchTowerDpsUpgrade = 5f;
 
+    private GameControllerScript gcs;
+
 	// Use this for initialization
-	void Start () {
-	
+	void Awake () {
+        gcs = GetComponent<GameControllerScript>();
 	}
 	
 	// Update is called once per frame
@@ -43,13 +43,13 @@ public class ConstructController : MonoBehaviour {
     protected void ShowModal()
     {
         Time.timeScale = 0.1f;
-        modalSempahore = false;
+        gcs.modalSempahore = false;
     }
 
     protected void HideModal()
     {
         Time.timeScale = 1f;
-        modalSempahore = true;
+        gcs.modalSempahore = true;
     }
 
     // ============================================================
@@ -62,7 +62,7 @@ public class ConstructController : MonoBehaviour {
 
     public void OnTrapConstructOpen()
     {
-        if (modalSempahore)
+        if (gcs.modalSempahore)
         {
             ShowModal();
             trapConstructError.text = "";
@@ -135,7 +135,7 @@ public class ConstructController : MonoBehaviour {
 
     public void OnDartTrapModifyOpen()
     {
-        if (modalSempahore)
+        if (gcs.modalSempahore)
         {
             ShowModal();
             trapModifyModal.SetActive(true);
@@ -187,7 +187,7 @@ public class ConstructController : MonoBehaviour {
 
     public void OnTowerConstructOpen()
     {
-        if (modalSempahore)
+        if (gcs.modalSempahore)
         {
             ShowModal();
             towerConstructError.text = "";
@@ -260,7 +260,7 @@ public class ConstructController : MonoBehaviour {
 
     public void OnWatchTowerModifyOpen()
     {
-        if (modalSempahore)
+        if (gcs.modalSempahore)
         {
             ShowModal();
             watchTowerModifyError.text = "";
