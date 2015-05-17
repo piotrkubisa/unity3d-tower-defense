@@ -4,10 +4,7 @@ using UnityEngine.UI;
 
 public class GameControllerScript : MonoBehaviour {
 
-	public StatsScript stats;
-	public Text coinsText;
-
-    private Tower activeTower;
+    //private StatsScript stats;
 
     public WaveController waveController;
     public Text currentWaveText;
@@ -20,8 +17,8 @@ public class GameControllerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		stats = new StatsScript();
-        coinsText.text = stats.coins.ToString();
+        //stats = GetComponent<StatsScript>();
+        //coinsText.text = stats.coins.ToString();
         currentWaveText.text = waveController.currentWave.ToString();
 	}
 
@@ -49,18 +46,8 @@ public class GameControllerScript : MonoBehaviour {
         Application.Quit();
     }
 
-    public bool Pay(int price)
+    void OnPortalHPChanged()
     {
-        if (stats.coins - price < 0)
-        {
-            return false;
-        }
 
-        stats.coins -= price;
-        OnStatsChanged();
-        return true;
     }
-
-    void OnStatsChanged() { }
-
 }

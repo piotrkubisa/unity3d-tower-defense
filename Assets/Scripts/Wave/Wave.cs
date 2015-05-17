@@ -5,7 +5,8 @@ public class Wave : MonoBehaviour {
 
 	public float waveSpeed = 1f;
     public float spawnDuration = 2f;
-	public int enemiesToSpawn = 1;
+	public int enemiesStandarToSpawn = 1;
+    public int enemiesTankerToSpawn = 0;
 
 	private int enemiesSpawned = 0;
     private float lastSpawnTime;
@@ -15,15 +16,10 @@ public class Wave : MonoBehaviour {
         lastSpawnTime = Time.time;
 	}
 
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
 	// Can I spawn next enemy?
 	bool checkWaveVolume()
 	{
-        if (enemiesSpawned >= enemiesToSpawn)
+        if (enemiesSpawned >= enemiesStandarToSpawn + enemiesTankerToSpawn)
         {
             return false;
         }

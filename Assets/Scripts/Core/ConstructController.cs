@@ -2,9 +2,10 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class ConstructController : MonoBehaviour {
+public class ConstructController : MonoBehaviour
+{
 
-	public GameObject watchTowerPrefab;
+    public GameObject watchTowerPrefab;
     public GameObject guardTowerPrefab;
     public GameObject dartTrapPrefab;
     public GameObject iceTrapPrefab;
@@ -27,16 +28,20 @@ public class ConstructController : MonoBehaviour {
     public float watchTowerDpsUpgrade = 5f;
 
     private GameControllerScript gcs;
+    private StatsScript stats;
 
-	// Use this for initialization
-	void Awake () {
+    // Use this for initialization
+    void Awake()
+    {
         gcs = GetComponent<GameControllerScript>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+        stats = GetComponent<StatsScript>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
     // ===========================================================
 
@@ -79,12 +84,12 @@ public class ConstructController : MonoBehaviour {
 
     public void OnDartTrapConstruct()
     {
-        bool hasMonies = true;
-        if (hasMonies)
+        int prefabCost = 200;
+        if (stats.Pay(prefabCost))
         {
             // Prepare
-            Vector3 pos = new Vector3(currentTrap.transform.position.x, currentTrap.transform.position.y / 2, currentTrap.transform.position.z);            
-            
+            Vector3 pos = new Vector3(currentTrap.transform.position.x, currentTrap.transform.position.y / 2, currentTrap.transform.position.z);
+
             // Instantiate
             GameObject go = Instantiate(dartTrapPrefab, pos, currentTrap.transform.rotation) as GameObject;
             DartTrap dt = go.GetComponent<DartTrap>();
@@ -103,8 +108,8 @@ public class ConstructController : MonoBehaviour {
 
     public void OnIceTrapConstruct()
     {
-        bool hasMonies = true;
-        if (hasMonies)
+        int prefabCost = 200;
+        if (stats.Pay(prefabCost))
         {
             // Prepare
             Vector3 pos = new Vector3(currentTrap.transform.position.x, currentTrap.transform.position.y / 2, currentTrap.transform.position.z);
@@ -130,7 +135,7 @@ public class ConstructController : MonoBehaviour {
     public void ModifyDartTrap(GameObject dt)
     {
         currentTrap = dt;
-        OnDartTrapModifyOpen();        
+        OnDartTrapModifyOpen();
     }
 
     public void OnDartTrapModifyOpen()
@@ -143,7 +148,8 @@ public class ConstructController : MonoBehaviour {
         }
     }
 
-    public void OnDartTrapModifyClose() {
+    public void OnDartTrapModifyClose()
+    {
         HideModal();
         trapModifyModal.SetActive(false);
         currentTrap = null;
@@ -151,8 +157,8 @@ public class ConstructController : MonoBehaviour {
 
     public void OnDartTrapModifyUpgrade()
     {
-        bool hasMonies = false;
-        if (hasMonies)
+        int prefabCost = 200;
+        if (stats.Pay(prefabCost))
         {
             // @todo: remove coins
             Debug.Log("some coins removed");
@@ -163,13 +169,13 @@ public class ConstructController : MonoBehaviour {
         else
         {
             trapModifyError.text = "Not enough credits to upgrade attack of this trap.";
-        }        
+        }
     }
 
     public void OnDartTrapModifySell()
-    { 
+    {
         // @todo: addCredits to Base stats
-        Debug.Log("some coins added");
+        stats.AddCredits(200);
 
         DartTrap dt = currentTrap.GetComponent<DartTrap>();
         dt.trapPlaceholder.SetActive(true);
@@ -197,8 +203,8 @@ public class ConstructController : MonoBehaviour {
 
     public void OnWatchTowerConstruct()
     {
-        bool hasMonies = true;
-        if (hasMonies)
+        int prefabCost = 200;
+        if (stats.Pay(prefabCost))
         {
             // Prepare
             Vector3 pos = new Vector3(currentTower.transform.position.x, currentTower.transform.position.y / 2, currentTower.transform.position.z);
@@ -221,8 +227,8 @@ public class ConstructController : MonoBehaviour {
 
     public void OnGuardTowerConstruct()
     {
-        bool hasMonies = true;
-        if (hasMonies)
+        int prefabCost = 200;
+        if (stats.Pay(prefabCost))
         {
             // Prepare
             Vector3 pos = new Vector3(currentTower.transform.position.x, currentTower.transform.position.y / 2, currentTower.transform.position.z);
@@ -271,7 +277,7 @@ public class ConstructController : MonoBehaviour {
     public void OnWatchTowerModifySell()
     {
         // @todo: addCredits to Base stats
-        Debug.Log("some coins added");
+        stats.AddCredits(200);
 
         WatchTower wt = currentTower.GetComponent<WatchTower>();
         wt.towerPlaceholder.SetActive(true);
@@ -281,8 +287,8 @@ public class ConstructController : MonoBehaviour {
 
     public void OnWatchTowerModifyUpgrade()
     {
-        bool hasMonies = false;
-        if (hasMonies)
+        int prefabCost = 200;
+        if (stats.Pay(prefabCost))
         {
             // @todo: remove coins
             Debug.Log("some coins removed");
@@ -296,7 +302,7 @@ public class ConstructController : MonoBehaviour {
         }
     }
 
-    public void OnWatchTowerModifyClose() 
+    public void OnWatchTowerModifyClose()
     {
         HideModal();
         currentTower = null;
