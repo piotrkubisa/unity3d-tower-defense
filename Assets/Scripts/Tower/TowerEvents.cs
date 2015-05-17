@@ -8,7 +8,8 @@ public class TowerEvents : MonoBehaviour {
 	public Material materialHover;
 	private Material materialStandart;
 
-    private Tower tower;
+    //[HideInInspector]
+    public Tower tower;
 
 	void Awake () {
 		rend = GetComponent<MeshRenderer>();

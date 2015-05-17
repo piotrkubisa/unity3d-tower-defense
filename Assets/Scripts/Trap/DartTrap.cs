@@ -4,6 +4,7 @@ using System.Collections;
 public class DartTrap : Trap {
 
     public float dps = 0.25f;
+    public int cost = 200;
 
     public ParticleSystem darts;
 
@@ -12,11 +13,6 @@ public class DartTrap : Trap {
         darts = GetComponentInChildren<ParticleSystem>();
     } 
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     void OnMouseDown()
     {
         cc.ModifyDartTrap(this.gameObject);

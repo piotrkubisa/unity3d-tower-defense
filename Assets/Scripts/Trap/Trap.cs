@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Trap : MonoBehaviour {
 
+    //private float dps;
+    //private int cost;
+
     private MeshRenderer rend;
     private Material materialStandart;
     public Material materialHover;

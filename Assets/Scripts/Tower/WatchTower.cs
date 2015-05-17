@@ -3,6 +3,8 @@ using System.Collections;
 
 public class WatchTower : Tower {
 
+    public int cost = 300;
+
 	public override void Attack() {
 		if(target != null) {
 			GameObject instance = Instantiate(arrowPrefab, transform.position, transform.rotation) as GameObject;

@@ -3,9 +3,9 @@ using System.Collections;
 
 public class Tower : MonoBehaviour {
 
-	public float cost;
+    //private int cost = 0;
 	// exactly: damage per projectile / for being shot
-	public float dps = 5f;
+    public float dps = 5f;
 	public float attackDmg = 7f;
 	public float hp = 350f;
 	public float rateOfFire = 0.75f;

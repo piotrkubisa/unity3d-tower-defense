@@ -84,7 +84,7 @@ public class ConstructController : MonoBehaviour
 
     public void OnDartTrapConstruct()
     {
-        int prefabCost = 200;
+        int prefabCost = dartTrapPrefab.GetComponent<DartTrap>().cost;
         if (stats.Pay(prefabCost))
         {
             // Prepare
@@ -108,7 +108,7 @@ public class ConstructController : MonoBehaviour
 
     public void OnIceTrapConstruct()
     {
-        int prefabCost = 200;
+        int prefabCost = iceTrapPrefab.GetComponent<IceTrap>().cost;
         if (stats.Pay(prefabCost))
         {
             // Prepare
@@ -178,8 +178,8 @@ public class ConstructController : MonoBehaviour
         stats.AddCredits(200);
 
         DartTrap dt = currentTrap.GetComponent<DartTrap>();
-        dt.trapPlaceholder.SetActive(true);
         Destroy(currentTrap);
+        dt.trapPlaceholder.SetActive(true);
         OnDartTrapModifyClose();
     }
 
@@ -203,7 +203,7 @@ public class ConstructController : MonoBehaviour
 
     public void OnWatchTowerConstruct()
     {
-        int prefabCost = 200;
+        int prefabCost = (watchTowerPrefab.GetComponent<TowerEvents>().tower as WatchTower).cost;
         if (stats.Pay(prefabCost))
         {
             // Prepare
@@ -227,7 +227,7 @@ public class ConstructController : MonoBehaviour
 
     public void OnGuardTowerConstruct()
     {
-        int prefabCost = 200;
+        int prefabCost = (guardTowerPrefab.GetComponent<TowerEvents>().tower as GuardTower).cost;
         if (stats.Pay(prefabCost))
         {
             // Prepare
@@ -277,11 +277,11 @@ public class ConstructController : MonoBehaviour
     public void OnWatchTowerModifySell()
     {
         // @todo: addCredits to Base stats
-        stats.AddCredits(200);
+        stats.AddCredits((watchTowerPrefab.GetComponent<TowerEvents>().tower as WatchTower).cost);
 
         WatchTower wt = currentTower.GetComponent<WatchTower>();
-        wt.towerPlaceholder.SetActive(true);
         Destroy(currentTower.GetComponentInParent<TowerEvents>().gameObject);
+        wt.towerPlaceholder.SetActive(true);        
         OnWatchTowerModifyClose();
     }
 
