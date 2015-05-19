@@ -26,6 +26,8 @@ public class EnemyHP : MonoBehaviour {
 
     void OnDie()
     {
+		EnemyBehaviourScript ebs = GetComponent<EnemyBehaviourScript> ();
+		Camera.main.GetComponent<StatsScript> ().AddCredits (ebs.coinsWorth);
         Destroy(this.gameObject);
     }
 }

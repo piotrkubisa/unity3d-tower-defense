@@ -12,6 +12,7 @@ public class EnemyBehaviourScript : MonoBehaviour {
 	public float runawaySpeed = 7f;
 	public float collectWaitTime = 10f;
 	private float collectTimer = 0;
+	public int coinsWorth = 300;
 
 	private bool hasSomething = false;
 
