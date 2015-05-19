@@ -7,8 +7,11 @@ public class WaveController : MonoBehaviour {
 	public GameObject[] spawnPoints;
 
 	public GameObject enemyPrefab;
+	public GameObject enemyTankerPrefab;
     public float waveCooldownTime = 10f;
     private float waveEndedTime;
+
+	public GameObject collectible;
 	
     //[HideInInspector]
 	public int currentWave = 0;
@@ -17,20 +20,23 @@ public class WaveController : MonoBehaviour {
 	void Start () {
 		// todo: via public DnD variable
 		spawnPoints = GameObject.FindGameObjectsWithTag (Tag.Respawn);
+		if (!collectible) {
+			collectible = GameObject.FindGameObjectWithTag(Tag.Collectible);	
+		}
+		if (waves.Length < 1) {
+			// sooo bad usecase
+			waves = Wave.FindObjectsOfType<Wave>();
+		}
 	}
 	
 	// Update is called once per frame
 	void LateUpdate () {
-		SpawnEnemies ();
+		CallCurrentWave ();
 	}
 
-	void SpawnEnemies()
+	void CallCurrentWave()
 	{
-		// switch to next / may I spawn next error
-		int r = Random.Range (0, this.spawnPoints.Length);
-		GameObject spawnPoint = spawnPoints [r];
-
-		bool ret = waves[currentWave].Spawn(spawnPoint.transform, enemyPrefab);
+		bool ret = waves[currentWave].Enable (this);
 		if (!ret) {
 			NextWave();
 		}

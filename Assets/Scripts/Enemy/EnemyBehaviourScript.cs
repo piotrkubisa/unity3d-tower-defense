@@ -7,6 +7,7 @@ public class EnemyBehaviourScript : MonoBehaviour {
 	public NavMeshAgent nav;
 	public GameObject targetCollectible;
 
+	public float enemyDamage = 5f;
 	public float walkSpeed = 1f;
 	public float runawaySpeed = 7f;
 	public float collectWaitTime = 10f;
