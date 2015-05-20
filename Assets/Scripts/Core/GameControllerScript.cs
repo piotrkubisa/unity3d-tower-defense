@@ -41,6 +41,11 @@ public class GameControllerScript : MonoBehaviour {
         modalSempahore = true;
     }
 
+	public void LoadGame()
+	{
+		Application.LoadLevel (0);
+	}
+
     public void Quit()
     {
         Application.Quit();
