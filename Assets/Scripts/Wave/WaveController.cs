@@ -17,17 +17,22 @@ public class WaveController : MonoBehaviour {
 	public int currentWave = 0;
 
 	// Use this for initialization
-	void Start () {
-		// todo: via public DnD variable
-		spawnPoints = GameObject.FindGameObjectsWithTag (Tag.Respawn);
-		if (!collectible) {
-			collectible = GameObject.FindGameObjectWithTag(Tag.Collectible);	
-		}
-		if (waves.Length < 1) {
-			// sooo bad usecase
-			waves = Wave.FindObjectsOfType<Wave>();
-		}
-	}
+    void Awake()
+    {
+        // check if not set
+        if (spawnPoints.Length < 1)
+        {
+            spawnPoints = GameObject.FindGameObjectsWithTag(Tag.Respawn);
+        }
+        if (!collectible)
+        {
+            collectible = GameObject.FindGameObjectWithTag(Tag.Collectible);
+        }
+        if (waves.Length < 1)
+        {
+            waves = Wave.FindObjectsOfType<Wave>();
+        }
+    }
 	
 	// Update is called once per frame
 	void LateUpdate () {
