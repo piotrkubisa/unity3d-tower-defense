@@ -7,8 +7,6 @@ public class GameControllerScript : MonoBehaviour {
     //private StatsScript stats;
 
     public WaveController waveController;
-    public Text currentWaveText;
-
     public GameObject menu;
 
     [HideInInspector]
@@ -17,9 +15,6 @@ public class GameControllerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-        //stats = GetComponent<StatsScript>();
-        //coinsText.text = stats.coins.ToString();
-        currentWaveText.text = waveController.currentWave.ToString();
 	}
 
     public void OnClickNextWave()

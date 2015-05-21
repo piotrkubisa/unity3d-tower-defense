@@ -4,9 +4,8 @@ using System.Collections;
 public class Tower : MonoBehaviour {
 
     //private int cost = 0;
-	// exactly: damage per projectile / for being shot
-    public float dps = 5f;
-	public float attackDmg = 7f;
+	// exactly: damage per (being) shot
+    //private float dps = 5f;
 	public float hp = 350f;
 	public float rateOfFire = 0.75f;
 	public float buildCooldown = 2f;
@@ -37,11 +36,6 @@ public class Tower : MonoBehaviour {
             cc = Camera.main.GetComponent<ConstructController>();
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	void OnTriggerStay(Collider other) {
 		if(other.gameObject.tag == Tag.Enemy) {
@@ -74,5 +68,10 @@ public class Tower : MonoBehaviour {
     }
 
 	public virtual void Attack() {
-	}	
+	}
+
+    public virtual float GetDps()
+    {
+        return 0f;
+    }
 }

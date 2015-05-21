@@ -4,6 +4,7 @@ using System.Collections;
 public class DartTrap : Trap {
 
     public float dps = 0.25f;
+    public float dpsUpgrade = 0.25f;
     public int cost = 200;
 
     public ParticleSystem darts;

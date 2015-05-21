@@ -17,7 +17,6 @@ public class ConstructController : MonoBehaviour
 
     public GameObject trapModifyModal;
     public Text trapModifyError;
-    public float dartTrapDpsUpgrade = 0.125f;
 
     private GameObject currentTower;
     public GameObject towerConstructModal;
@@ -25,7 +24,6 @@ public class ConstructController : MonoBehaviour
 
     public GameObject watchTowerModifyModal;
     public Text watchTowerModifyError;
-    public float watchTowerDpsUpgrade = 5f;
 
     private GameControllerScript gcs;
     private StatsScript stats;
@@ -163,7 +161,7 @@ public class ConstructController : MonoBehaviour
             // @todo: remove coins
             Debug.Log("some coins removed");
             DartTrap dt = currentTrap.GetComponent<DartTrap>();
-            dt.dps += dartTrapDpsUpgrade;
+            dt.dps += dt.dpsUpgrade;
             OnDartTrapModifyClose();
         }
         else
@@ -276,7 +274,6 @@ public class ConstructController : MonoBehaviour
 
     public void OnWatchTowerModifySell()
     {
-        // @todo: addCredits to Base stats
         stats.AddCredits((watchTowerPrefab.GetComponent<TowerEvents>().tower as WatchTower).cost);
 
         WatchTower wt = currentTower.GetComponent<WatchTower>();
@@ -290,10 +287,8 @@ public class ConstructController : MonoBehaviour
         int prefabCost = 200;
         if (stats.Pay(prefabCost))
         {
-            // @todo: remove coins
-            Debug.Log("some coins removed");
             WatchTower wt = currentTower.GetComponent<WatchTower>();
-            wt.dps += watchTowerDpsUpgrade;
+            wt.dps += wt.dpsUpgrade;
             OnWatchTowerModifyClose();
         }
         else

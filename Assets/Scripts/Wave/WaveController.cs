@@ -1,24 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
-public class WaveController : MonoBehaviour {
+public class WaveController : MonoBehaviour
+{
 
-	public Wave[] waves;
-	public GameObject[] spawnPoints;
+    public Wave[] waves;
+    public GameObject[] spawnPoints;
 
-	public GameObject enemyPrefab;
-	public GameObject enemyTankerPrefab;
+    public GameObject enemyPrefab;
+    public GameObject enemyTankerPrefab;
     public float waveCooldownTime = 10f;
+    private float waveCooldownCache;
     private float waveEndedTime;
 
-	public GameObject collectible;
-	
-    //[HideInInspector]
-	public int currentWave = 0;
+    public GameObject collectible;
+    public Text currentWaveText;
 
-	// Use this for initialization
+    //[HideInInspector]
+    public int currentWave = 0;
+
+    // Use this for initialization
     void Awake()
     {
+        waveCooldownCache = waveCooldownTime;
         // check if not set
         if (spawnPoints.Length < 1)
         {
@@ -32,47 +37,53 @@ public class WaveController : MonoBehaviour {
         {
             waves = Wave.FindObjectsOfType<Wave>();
         }
+        currentWaveText.text = (currentWave + 1) + "/" + waves.Length;
     }
-	
-	// Update is called once per frame
-	void LateUpdate () {
-		CallCurrentWave ();
-	}
 
-	void CallCurrentWave()
-	{
-		bool ret = waves[currentWave].Enable (this);
-		if (!ret) {
-			NextWave();
-		}
-	}
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        CallCurrentWave();
+    }
 
-	void NextWave()
-	{        
-		if (currentWave >= waves.Length -1) {
+    void CallCurrentWave()
+    {
+        bool ret = waves[currentWave].Enable(this);
+        if (!ret)
+        {
+            NextWave();
+        }
+    }
+
+    void NextWave()
+    {
+        if (currentWave >= waves.Length - 1)
+        {
             Fin();
-		} else {
+        }
+        else
+        {
             if (waveEndedTime == 0)
             {
-                waveEndedTime = Time.time;    
-            }            
+                waveEndedTime = Time.time;
+            }
             Cooldown();
-		}
-	}
+        }
+    }
 
     void Cooldown()
     {
         if (Time.time > waveEndedTime + waveCooldownTime)
         {
-            OnWaveChange();            
-            waveEndedTime = 0;
-        }        
+            OnWaveChange();
+
+        }
     }
 
     public void SkipWaveCooldown()
     {
-        // @todo: untoggle in Wave
         waveCooldownTime = 0;
+        NextWave();
     }
 
     void Fin()
@@ -82,7 +93,10 @@ public class WaveController : MonoBehaviour {
 
     void OnWaveChange()
     {
+        waveEndedTime = 0;
         currentWave++;
+        waveCooldownTime = waveCooldownCache;
+        currentWaveText.text = (currentWave + 1) + "/" + waves.Length;
         Debug.Log("Wave " + currentWave + " has started");
     }
 }
