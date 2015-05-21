@@ -19,7 +19,15 @@ public class TowerEvents : MonoBehaviour {
 
     void OnMouseDown()
     {
-        tower.cc.ModifyTower(tower.gameObject);
+        if (Tag.WatchTower == gameObject.tag)
+        {
+            tower.cc.ModifyWatchTower(tower.gameObject);
+        }
+        else if (Tag.GuardTower == gameObject.tag)
+        {
+            tower.cc.ModifyGuardTower(tower.gameObject);
+        }
+        
     }
 	
 	void OnMouseEnter() {

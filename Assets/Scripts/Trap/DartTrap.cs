@@ -5,6 +5,7 @@ public class DartTrap : Trap {
 
     public float dps = 0.25f;
     public float dpsUpgrade = 0.25f;
+    public int dpsUpgradeCost = 200;
     public int cost = 200;
 
     public ParticleSystem darts;
@@ -29,6 +30,11 @@ public class DartTrap : Trap {
     {
         transform.position = new Vector3(transform.position.x, -0.25f, transform.position.z);
         darts.Stop();
+    }
+
+    public void Upgrade()
+    {
+        dps += dpsUpgrade;
     }
 
     void OnTriggerStay(Collider col)

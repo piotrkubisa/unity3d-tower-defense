@@ -20,6 +20,9 @@ public class WaveController : MonoBehaviour
     //[HideInInspector]
     public int currentWave = 0;
 
+    private int enemiesCount = 0;
+    private int enemiesKilled = 0;
+
     // Use this for initialization
     void Awake()
     {
@@ -38,9 +41,13 @@ public class WaveController : MonoBehaviour
             waves = Wave.FindObjectsOfType<Wave>();
         }
         currentWaveText.text = (currentWave + 1) + "/" + waves.Length;
+        for (int i = 0; i < waves.Length; i++)
+        {
+            enemiesCount += waves[i].enemiesStandardToSpawn;
+            enemiesCount += waves[i].enemiesTankerToSpawn;
+        }
     }
 
-    // Update is called once per frame
     void LateUpdate()
     {
         CallCurrentWave();
@@ -76,7 +83,6 @@ public class WaveController : MonoBehaviour
         if (Time.time > waveEndedTime + waveCooldownTime)
         {
             OnWaveChange();
-
         }
     }
 
@@ -88,7 +94,16 @@ public class WaveController : MonoBehaviour
 
     void Fin()
     {
+        if (enemiesKilled >= enemiesCount)
+        {
+            Debug.Log("All dead, success");
+        }
         Debug.Log("It was last round");
+    }
+
+    public void OnEnemyKilled()
+    {
+        enemiesKilled++;
     }
 
     void OnWaveChange()

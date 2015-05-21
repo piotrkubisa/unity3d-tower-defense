@@ -6,10 +6,12 @@ public class EnemyHP : MonoBehaviour {
 	public float hp = 100f;
     [HideInInspector]
     public float startHpVal;
+    public EnemyBehaviourScript ebs;
 
 	// Use this for initialization
 	void Start () {
         startHpVal = hp;
+        ebs = GetComponent<EnemyBehaviourScript>();
 	}
 	
 	// Update is called once per frame
@@ -24,9 +26,12 @@ public class EnemyHP : MonoBehaviour {
 		}
 	}
 
-    void OnDie()
+    public void OnDie()
     {
-		EnemyBehaviourScript ebs = GetComponent<EnemyBehaviourScript> ();
+        if (ebs.wave != null)
+        {
+            ebs.wave.waveController.OnEnemyKilled();    
+        }        
 		Camera.main.GetComponent<StatsScript> ().AddCredits (ebs.coinsWorth);
         Destroy(this.gameObject);
     }

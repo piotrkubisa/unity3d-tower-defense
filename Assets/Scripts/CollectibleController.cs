@@ -6,20 +6,19 @@ public class CollectibleController : MonoBehaviour {
 
 	public Slider collectibleBar;
 	public GameObject startScreenCanvas;
-	public StatsScript stats;
+	//public StatsScript stats;
 
 	void Awake()
 	{
-		stats = Camera.main.GetComponent<StatsScript> ();
+		//stats = Camera.main.GetComponent<StatsScript> ();
 	}
 
 	void OnTriggerEnter(Collider col)
 	{
 		if (col.gameObject.tag == Tag.Enemy) {
-			EnemyBehaviourScript eb = col.gameObject.GetComponent<EnemyBehaviourScript>();
-			stats.AddCredits(eb.coinsWorth);
-			OnDamage(eb.enemyDamage);
-			Destroy(col.gameObject);
+            EnemyHP hp = col.gameObject.GetComponent<EnemyHP>();
+            hp.OnDie();
+            OnDamage(hp.ebs.enemyDamage);
 		}
 	}
 

@@ -1,90 +1,104 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyBehaviourScript : MonoBehaviour {
+public class EnemyBehaviourScript : MonoBehaviour
+{
 
     [HideInInspector]
-	public NavMeshAgent nav;
-	public GameObject targetCollectible;
+    public NavMeshAgent nav;
+    public GameObject targetCollectible;
 
-	public float enemyDamage = 5f;
-	public float walkSpeed = 1f;
-	public float runawaySpeed = 7f;
-	public float collectWaitTime = 10f;
-	private float collectTimer = 0;
-	public int coinsWorth = 300;
+    public float enemyDamage = 5f;
+    public float walkSpeed = 1f;
+    public float runawaySpeed = 7f;
+    public float collectWaitTime = 10f;
+    private float collectTimer = 0;
+    public int coinsWorth = 300;
 
-	private bool hasSomething = false;
+    [HideInInspector]
+    public Wave wave;
+    private bool hasSomething = false;
 
-	// Use this for initialization
-	void Start () {
-		nav = this.GetComponent<NavMeshAgent>();
-		if(targetCollectible == null) this.findClosestCollectible();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if(hasSomething || !targetCollectible) {
-			runaway();
-			// Debug.Log("runaway");
-		} else {
-			pursue();
-			// Debug.Log("pursue");
-		}
-		// Debug.Log(collectTimer);
-	}
+    void Start()
+    {
+        nav = this.GetComponent<NavMeshAgent>();
+        if (targetCollectible == null) this.findClosestCollectible();
+    }
 
-	private void collect() {
-		nav.Stop();
+    void Update()
+    {
+        if (hasSomething || !targetCollectible)
+        {
+            runaway();
+            // Debug.Log("runaway");
+        }
+        else
+        {
+            pursue();
+            // Debug.Log("pursue");
+        }
+        // Debug.Log(collectTimer);
+    }
 
-		this.collectTimer += Time.deltaTime;
+    private void collect()
+    {
+        nav.Stop();
 
-	 	if (this.collectTimer >= this.collectWaitTime)
-	 	{
-	 		this.hasSomething = true;
-	 		this.collectTimer = 0f;
-	 	}
-	}
+        this.collectTimer += Time.deltaTime;
 
-	private void pursue() {
-		nav.Resume();
-		nav.speed = walkSpeed;
-		nav.destination = targetCollectible.transform.position;
-		Renderer rend = targetCollectible.GetComponent<Renderer>();
+        if (this.collectTimer >= this.collectWaitTime)
+        {
+            this.hasSomething = true;
+            this.collectTimer = 0f;
+        }
+    }
 
-		 if (nav.remainingDistance <= nav.stoppingDistance + rend.bounds.size.x*2)
-		 {
-		 	collect();
-		 } else {
-		 	this.collectTimer = 0f;
-		 }
-	}
+    private void pursue()
+    {
+        nav.Resume();
+        nav.speed = walkSpeed;
+        nav.destination = targetCollectible.transform.position;
+        Renderer rend = targetCollectible.GetComponent<Renderer>();
 
-	private void runaway() {
-		nav.speed = runawaySpeed;
-		nav.Stop(); // dont stop
-        
-	}
+        if (nav.remainingDistance <= nav.stoppingDistance + rend.bounds.size.x * 2)
+        {
+            collect();
+        }
+        else
+        {
+            this.collectTimer = 0f;
+        }
+    }
 
-    private void findClosestCollectible() {
+    private void runaway()
+    {
+        nav.speed = runawaySpeed;
+        nav.Stop(); // dont stop
+
+    }
+
+    private void findClosestCollectible()
+    {
         GameObject[] collectibles;
         collectibles = GameObject.FindGameObjectsWithTag(Tag.Collectible);
 
         GameObject closest = null;
         float distance = Mathf.Infinity;
         Vector3 position = transform.position;
-        
-        foreach (GameObject go in collectibles) {
+
+        foreach (GameObject go in collectibles)
+        {
             Vector3 diff = go.transform.position - position;
             float curDistance = diff.sqrMagnitude;
 
-            if (curDistance < distance) {
+            if (curDistance < distance)
+            {
                 closest = go;
                 distance = curDistance;
             }
         }
 
-        if(closest != null) 
-        	this.targetCollectible = closest;
+        if (closest != null)
+            this.targetCollectible = closest;
     }
 }

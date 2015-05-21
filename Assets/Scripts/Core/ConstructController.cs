@@ -15,8 +15,10 @@ public class ConstructController : MonoBehaviour
 
     private GameObject currentTrap;
 
-    public GameObject trapModifyModal;
-    public Text trapModifyError;
+    public GameObject dartTrapModifyModal;
+    public Text dartTrapModifyError;
+    public GameObject iceTrapModifyModal;
+    public Text iceTrapModifyError;
 
     private GameObject currentTower;
     public GameObject towerConstructModal;
@@ -24,23 +26,19 @@ public class ConstructController : MonoBehaviour
 
     public GameObject watchTowerModifyModal;
     public Text watchTowerModifyError;
+    public GameObject guardTowerModifyModal;
+    public Text guardTowerModifyError;
 
     private GameControllerScript gcs;
     private StatsScript stats;
 
-    // Use this for initialization
     void Awake()
     {
         gcs = GetComponent<GameControllerScript>();
         stats = GetComponent<StatsScript>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    // Modal
     // ===========================================================
 
     protected void ShowModal()
@@ -55,6 +53,7 @@ public class ConstructController : MonoBehaviour
         gcs.modalSempahore = true;
     }
 
+    // Construct Trap
     // ============================================================
 
     public void SpawnTrap(GameObject placeholder)
@@ -128,6 +127,7 @@ public class ConstructController : MonoBehaviour
         }
     }
 
+    // Dart Trap
     // ============================================================
 
     public void ModifyDartTrap(GameObject dt)
@@ -141,7 +141,7 @@ public class ConstructController : MonoBehaviour
         if (gcs.modalSempahore)
         {
             ShowModal();
-            trapModifyModal.SetActive(true);
+            dartTrapModifyModal.SetActive(true);
             trapConstructError.text = "";
         }
     }
@@ -149,38 +149,98 @@ public class ConstructController : MonoBehaviour
     public void OnDartTrapModifyClose()
     {
         HideModal();
-        trapModifyModal.SetActive(false);
+        dartTrapModifyModal.SetActive(false);
         currentTrap = null;
     }
 
     public void OnDartTrapModifyUpgrade()
     {
-        int prefabCost = 200;
-        if (stats.Pay(prefabCost))
+        int cost = dartTrapPrefab.GetComponent<DartTrap>().dpsUpgradeCost;
+        if (stats.Pay(cost))
         {
-            // @todo: remove coins
-            Debug.Log("some coins removed");
             DartTrap dt = currentTrap.GetComponent<DartTrap>();
-            dt.dps += dt.dpsUpgrade;
+            dt.Upgrade();
             OnDartTrapModifyClose();
         }
         else
         {
-            trapModifyError.text = "Not enough credits to upgrade attack of this trap.";
+            dartTrapModifyError.text = "Not enough credits to upgrade attack of this trap.";
         }
     }
 
     public void OnDartTrapModifySell()
     {
-        // @todo: addCredits to Base stats
-        stats.AddCredits(200);
-
         DartTrap dt = currentTrap.GetComponent<DartTrap>();
+        stats.AddCredits(dt.cost);
+        if (dt.trapPlaceholder)
+        {
+            dt.trapPlaceholder.SetActive(true);
+        }
         Destroy(currentTrap);
-        dt.trapPlaceholder.SetActive(true);
         OnDartTrapModifyClose();
     }
 
+    // Ice Trap
+    // ============================================================
+
+    public void ModifyIceTrap(GameObject dt)
+    {
+        currentTrap = dt;
+        OnIceTrapModifyOpen();
+    }
+
+    public void OnIceTrapModifyOpen()
+    {
+        if (gcs.modalSempahore)
+        {
+            ShowModal();
+            iceTrapModifyModal.SetActive(true);
+            trapConstructError.text = "";
+        }
+    }
+
+    public void OnIceTrapModifyClose()
+    {
+        HideModal();
+        iceTrapModifyModal.SetActive(false);
+        currentTrap = null;
+    }
+
+    public void OnIceTrapModifyUpgrade()
+    {
+        int cost = iceTrapPrefab.GetComponent<IceTrap>().iceSpeedUpgradeCost;
+        if (stats.Pay(cost))
+        {
+            IceTrap it = currentTrap.GetComponent<IceTrap>();
+            if (it.Upgrade())
+            {
+                OnIceTrapModifyClose();
+            }
+            else
+            {
+                stats.AddCredits(cost);
+                iceTrapModifyError.text = "Reached maximum level of upgrade.";
+            }
+        }
+        else
+        {
+            iceTrapModifyError.text = "Not enough credits to upgrade this trap.";
+        }
+    }
+
+    public void OnIceTrapModifySell()
+    {
+        IceTrap dt = currentTrap.GetComponent<IceTrap>();
+        stats.AddCredits(dt.cost);
+        if (dt.trapPlaceholder)
+        {
+            dt.trapPlaceholder.SetActive(true);
+        }
+        Destroy(currentTrap);
+        OnIceTrapModifyClose();
+    }
+
+    // Construct Tower
     // ============================================================
 
     public void SpawnTower(GameObject placeholder)
@@ -254,9 +314,10 @@ public class ConstructController : MonoBehaviour
         towerConstructModal.SetActive(false);
     }
 
+    // Watch Tower
     // ============================================================
 
-    public void ModifyTower(GameObject tower)
+    public void ModifyWatchTower(GameObject tower)
     {
         currentTower = tower;
         OnWatchTowerModifyOpen();
@@ -274,26 +335,27 @@ public class ConstructController : MonoBehaviour
 
     public void OnWatchTowerModifySell()
     {
-        stats.AddCredits((watchTowerPrefab.GetComponent<TowerEvents>().tower as WatchTower).cost);
-
         WatchTower wt = currentTower.GetComponent<WatchTower>();
+        stats.AddCredits(wt.cost);
+        if (wt.towerPlaceholder)
+        {
+            wt.towerPlaceholder.SetActive(true);
+        }
         Destroy(currentTower.GetComponentInParent<TowerEvents>().gameObject);
-        wt.towerPlaceholder.SetActive(true);        
         OnWatchTowerModifyClose();
     }
 
     public void OnWatchTowerModifyUpgrade()
     {
-        int prefabCost = 200;
-        if (stats.Pay(prefabCost))
+        WatchTower wt = currentTower.GetComponent<WatchTower>();
+        if (wt && stats.Pay(wt.dpsUpgradeCost))
         {
-            WatchTower wt = currentTower.GetComponent<WatchTower>();
-            wt.dps += wt.dpsUpgrade;
+            wt.Upgrade();
             OnWatchTowerModifyClose();
         }
         else
         {
-            watchTowerModifyError.text = "Not enough credits to upgrade attack of this Watch Tower.";
+            watchTowerModifyError.text = "Not enough credits to upgrade attack of this Tower.";
         }
     }
 
@@ -302,5 +364,57 @@ public class ConstructController : MonoBehaviour
         HideModal();
         currentTower = null;
         watchTowerModifyModal.SetActive(false);
+    }
+
+    // Guard Tower
+    // ============================================================
+
+    public void ModifyGuardTower(GameObject tower)
+    {
+        currentTower = tower;
+        OnGuardTowerModifyOpen();
+    }
+
+    public void OnGuardTowerModifyOpen()
+    {
+        if (gcs.modalSempahore)
+        {
+            ShowModal();
+            guardTowerModifyError.text = "";
+            guardTowerModifyModal.SetActive(true);
+        }
+    }
+
+    public void OnGuardTowerModifySell()
+    {
+        GuardTower gt = currentTower.GetComponent<GuardTower>();
+        stats.AddCredits(gt.cost);
+        if (gt.towerPlaceholder)
+        {
+            gt.towerPlaceholder.SetActive(true);
+        }
+        Destroy(currentTower.GetComponentInParent<TowerEvents>().gameObject);
+        OnGuardTowerModifyClose();
+    }
+
+    public void OnGuardTowerModifyUpgrade()
+    {
+        GuardTower gt = currentTower.GetComponent<GuardTower>();
+        if (gt && stats.Pay(gt.dpsUpgradeCost))
+        {
+            gt.Upgrade();
+            OnGuardTowerModifyClose();
+        }
+        else
+        {
+            guardTowerModifyError.text = "Not enough credits to upgrade attack of this Tower.";
+        }
+    }
+
+    public void OnGuardTowerModifyClose()
+    {
+        HideModal();
+        currentTower = null;
+        guardTowerModifyModal.SetActive(false);
     }
 }

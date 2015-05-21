@@ -7,6 +7,7 @@ public class GuardTower : Tower {
     public float dps = 75f;
     public float projectileSpeed = 2f;
     public float dpsUpgrade = 25f;
+    public int dpsUpgradeCost = 500;
 
 	public override void Attack() {
 		if(target != null) {
@@ -21,5 +22,10 @@ public class GuardTower : Tower {
     public override float GetDps()
     {
         return dps;
+    }
+
+    public void Upgrade()
+    {
+        dps += dpsUpgrade;
     }
 }

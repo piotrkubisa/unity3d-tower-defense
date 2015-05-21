@@ -6,6 +6,7 @@ public class WatchTower : Tower {
     public int cost = 300;
     public float dps = 25f;
     public float dpsUpgrade = 10f;
+    public int dpsUpgradeCost = 250;
 
 	public override void Attack() {
 		if(target != null) {
@@ -20,5 +21,10 @@ public class WatchTower : Tower {
     public override float GetDps()
     {
         return dps;
+    }
+
+    public void Upgrade()
+    {
+        dps += dpsUpgrade;
     }
 }
