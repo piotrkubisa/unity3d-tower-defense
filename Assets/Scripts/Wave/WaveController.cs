@@ -20,8 +20,8 @@ public class WaveController : MonoBehaviour
     //[HideInInspector]
     public int currentWave = 0;
 
-    private int enemiesCount = 0;
-    private int enemiesKilled = 0;
+    public int enemiesCount = 0;
+    public int enemiesKilled = 0;
 
     // Use this for initialization
     void Awake()
