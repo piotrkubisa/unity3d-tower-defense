@@ -8,13 +8,14 @@ public class GameControllerScript : MonoBehaviour {
 
     public WaveController waveController;
     public GameObject menu;
+    public GameObject startScreen;
 
     [HideInInspector]
     public bool modalSempahore = true;
 
-
 	// Use this for initialization
 	void Awake () {
+        Time.timeScale = 1f;
 	}
 
     public void OnClickNextWave()
@@ -49,5 +50,21 @@ public class GameControllerScript : MonoBehaviour {
     void OnPortalHPChanged()
     {
 
+    }
+
+    void GameOver()
+    {
+        Time.timeScale = 0.0f;
+        startScreen.SetActive(true);
+    }
+
+    public void GameOverSuccess()
+    {
+        GameOver();
+    }
+
+    public void GameOverfailed()
+    {
+        GameOver();
     }
 }

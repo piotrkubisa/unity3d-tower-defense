@@ -96,9 +96,11 @@ public class WaveController : MonoBehaviour
     {
         if (enemiesKilled >= enemiesCount)
         {
-            Debug.Log("All dead, success");
+            //Debug.Log("All dead, success");
+            Camera.main.GetComponent<GameControllerScript>().GameOverSuccess();
+            this.gameObject.SetActive(false);
         }
-        Debug.Log("It was last round");
+        // Debug.Log("It was last round");
     }
 
     public void OnEnemyKilled()

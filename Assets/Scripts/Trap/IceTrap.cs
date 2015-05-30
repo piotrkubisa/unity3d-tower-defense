@@ -3,7 +3,7 @@ using System.Collections;
 
 public class IceTrap : Trap {
 
-    public int cost = 350;
+    public int cost = 150;
     public float iceSpeed = 0.75f;
     public float iceSpeedUpgrade = 0.1f;
     public int iceSpeedUpgradeCost = 200;

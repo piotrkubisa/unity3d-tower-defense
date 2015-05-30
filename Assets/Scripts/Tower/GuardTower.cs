@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GuardTower : Tower {
 
-    public int cost = 1000;
+    public int cost = 500;
     public float dps = 75f;
     public float projectileSpeed = 2f;
     public float dpsUpgrade = 25f;
